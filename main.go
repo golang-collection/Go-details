@@ -60,6 +60,10 @@ func init() {
 	}
 }
 
+// @title 技术细节
+// @version 1.0
+// @description 注重技术细节
+// @Github https://github.com/golang-collection/Go-details
 func main() {
 	router := routers.NewRouter()
 	s := &http.Server{

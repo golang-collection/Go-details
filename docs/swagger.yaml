@@ -1,0 +1,161 @@
+definitions:
+  errcode.Error:
+    properties:
+      code:
+        type: integer
+      details:
+        items:
+          type: string
+        type: array
+      msg:
+        type: string
+    type: object
+  model.Question:
+    properties:
+      created_by:
+        type: string
+      created_on:
+        type: string
+      deleted_on:
+        type: string
+      id:
+        type: integer
+      is_del:
+        type: integer
+      modified_by:
+        type: string
+      modified_on:
+        type: string
+      question:
+        type: string
+      source:
+        type: string
+      state:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: 注重技术细节
+  license: {}
+  title: 技术细节
+  version: "1.0"
+paths:
+  /api/v1/question:
+    post:
+      parameters:
+      - description: 问题内容
+        in: body
+        name: content
+        required: true
+        schema:
+          type: string
+      - description: 作者
+        in: body
+        name: author
+        required: true
+        schema:
+          type: string
+      - description: 创建者
+        in: body
+        name: created_by
+        required: true
+        schema:
+          type: integer
+      - description: 状态
+        in: body
+        name: state
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Question'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 创建问题
+  /api/v1/question/{id}:
+    delete:
+      parameters:
+      - description: 问题ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 删除问题
+    get:
+      parameters:
+      - description: 问题ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Question'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取问题
+    put:
+      parameters:
+      - description: 问题内容
+        in: body
+        name: content
+        schema:
+          type: string
+      - description: 修改者
+        in: body
+        name: modified_by
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Question'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新问题
+swagger: "2.0"

@@ -35,7 +35,7 @@ func (d *Dao) UpdateQuestion(param *Question) error {
 	}
 
 	if param.Question != "" {
-		values["story"] = param.Question
+		values["question"] = param.Question
 	}
 
 	return question.Update(d.engine, values)

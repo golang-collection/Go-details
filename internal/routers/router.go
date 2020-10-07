@@ -2,12 +2,14 @@ package routers
 
 import (
 	"Go-details/global"
+	"Go-details/internal/middleware"
 	"Go-details/internal/routers/api/sd"
+	"Go-details/internal/routers/api/v1"
 	"Go-details/pkg/limiter"
 	"github.com/gin-gonic/gin"
 	"time"
 
-	//_ "Go-details/docs"
+	_ "Go-details/docs"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
@@ -37,10 +39,10 @@ func NewRouter() *gin.Engine {
 		//r.Use(middleware.Recovery())
 	}
 
-	//r.Use(middleware.Tracing())
-	//r.Use(middleware.RateLimiter(methodLimiters))
-	//r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout))
-	//r.Use(middleware.Translations())
+	r.Use(middleware.Tracing())
+	r.Use(middleware.RateLimiter(methodLimiters))
+	r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout))
+	r.Use(middleware.Translations())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -51,6 +53,16 @@ func NewRouter() *gin.Engine {
 		svcd.GET("/disk", sd.DiskCheck)
 		svcd.GET("/cpu", sd.CPUCheck)
 		svcd.GET("/ram", sd.RAMCheck)
+	}
+
+	question := v1.Question{}
+
+	apiv1 := r.Group("/api/v1")
+	{
+		apiv1.POST("/question", question.Create)
+		apiv1.DELETE("/question/:id", question.Delete)
+		apiv1.PUT("/question/:id", question.Update)
+		apiv1.GET("/question/:id", question.Get)
 	}
 
 	return r
